@@ -30,5 +30,7 @@ post '/observation' do
   end
   db.Commit
 
+  db.close
+
   id.to_s
 end
