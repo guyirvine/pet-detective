@@ -31,10 +31,7 @@ class ObservationTest < Test::Unit::TestCase
 
   def test_post
     payload = Hash['field1', 'A', 'field2', 'B']
-    hash = Hash['app-key', 1,
-                'mon-key', 2,
-                'sent', '2015-03-27',
-                'payload', payload]
+    hash = Hash['app-key', 1, 'mon-key', 2, 'sent', '2015-03-27', 'payload', payload]
 
     db = FluidDb::Db(ENV['DB'])
     ob_count = db.queryForValue('SELECT count(*) FROM observation_tbl').to_i
