@@ -5,6 +5,11 @@ before do
 #  raise 'ENV[DB] needs to be a valid FluidDb uri' if ENV['DB'].nil?
 end
 
+get '/config.js' do
+  Hash['db',ENV['DB']]
+end
+
+
 post '/observation' do
   db = FluidDb::Db(ENV['DB'])
 
