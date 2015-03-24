@@ -6,7 +6,7 @@ before do
 end
 
 get '/config.js' do
-  Hash['db',ENV['DB']]
+  Hash['db',ENV['DB']].to_json
 end
 
 
