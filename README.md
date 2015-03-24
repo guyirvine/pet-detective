@@ -6,19 +6,24 @@ ServiceMonitor version 2.
 2. Oil light monitoring
 3. Metric display
 
-## Payload
+## Observation
+
+### Runtime
 
     {
+      app-key: <uuid>, //Application key
+      mon-key: <uuid>, //Monitor key
+      sent: <timestamp>,
+      payload: <payload> //Were payload is a key,value JS object
+    }
+
+### Stored
+
+    observation
+      received: <timestamp>
       app-key: <uuid>,
       mon-key: <uuid>,
       sent: <timestamp>,
-      payload: { <payload> }
-    }
 
-## Stored
-
-    received: <timestamp>
-    app-key: <uuid>,
-    mon-key: <uuid>,
-    sent: <timestamp>,
-    payload: { <payload> }
+    observation payload
+       observation ref, key, value
