@@ -19,59 +19,14 @@
   </head>
 
   <body>
-    <h1>Pet Detective</h1>
 
     <div class="content">
-
-      <table>
-        <thead>
-          <tr>
-            <th>App</th>
-            <th>Last Contact</th>
-          </tr>
-        </thead>
-        <tbody data-bind="foreach: list">
-          <tr>
-            <td data-bind="text: name"></td>
-            <td data-bind="text: lastcontact"></td>
-          </tr>
-        </tbody>
-      </table>
-
     </div>
 
     <script>
-
-    function App( _name, _lastcontact ) {
-      var self = this;
-
-      self.name = ko.observable( _name );
-      self.lastcontact = ko.observable( _lastcontact );
-    }
-
-    function ViewModel() {
-      var self = this;
-
-      self.list = ko.observableArray();
-      self.add = function( name, lastcontact ) {
-        var app = new App( name, lastcontact );
-        self.list.push( app );
-      }
-    }
-
-    var vm = new ViewModel();
-    ko.applyBindings( vm );
-
-
-    $.getJSON( 'lastcontact', function( _l ) {
-      console.log( _l );
-      _.each( _l, function(el) {
-        vm.add( el.app_key, el.lastcontact );
+      $.get( "page/app.htm", function( content ) {
+        $( ".content" ).html( content );
       });
-      console.log( vm.list() );
-    });
-
-
     </script>
   </body>
 

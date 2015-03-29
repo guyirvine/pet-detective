@@ -7,13 +7,12 @@ before do
 end
 
 get '/config.js' do
-  Hash['db',ENV['DB']].to_json
+  Hash['db', ENV['DB']].to_json
 end
-
 
 get '/apps' do
   db = FluidDb::Db(ENV['DB'])
-  list = db.queryForResultset( 'SELECT DISTINCT app_key observation_tbl' )
+  list = db.queryForResultset('SELECT DISTINCT app_key observation_tbl')
   db.close
 
   return list.to_json
@@ -21,12 +20,19 @@ end
 
 get '/lastcontact' do
   db = FluidDb::Db(ENV['DB'])
-  list = db.queryForResultset( 'SELECT app_key, MAX( received ) AS lastcontact FROM observation_tbl GROUP BY app_key' )
+  list = db.queryForResultset('SELECT DISTINCT ON ( app_key, mon_key ) app_key, mon_key, received, id FROM observation_tbl ORDER BY app_key, mon_key, received DESC')
   db.close
 
   return list.to_json
 end
 
+get '/observationpayload/:id' do
+  db = FluidDb::Db(ENV['DB'])
+  list = db.queryForResultset('SELECT id, observation_id, key, value FROM observationpayload_tbl WHERE observation_id = ?', [params[:id]])
+  db.close
+
+  return list.to_json
+end
 
 post '/observation' do
   db = FluidDb::Db(ENV['DB'])
@@ -42,7 +48,7 @@ post '/observation' do
   id = db.queryForValue("SELECT CURRVAL( 'observation_seq' )")
   data['payload'].keys.each do |key|
     sql = 'INSERT INTO observationpayload_tbl( observation_id, key, value ) VALUES ( ?, ?, ? )'
-    params = [id, key, data['payload']['key']]
+    params = [id, key, data['payload'][key]]
     db.execute(sql, params)
   end
   db.Commit

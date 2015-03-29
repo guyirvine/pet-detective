@@ -1,0 +1,49 @@
+<h1>Pet Detective - Observation</h1>
+
+<div id="observation-content" class="observation-content">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: list">
+          <tr>
+            <td data-bind="text: key"></td>
+            <td data-bind="text: value"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <script>
+
+    function ObservationPayload( _key, _value ) {
+      var self = this;
+
+      self.key = ko.observable( _key );
+      self.value = ko.observable( _value );
+    }
+
+    function ObViewModel() {
+      var self = this;
+
+      self.list = ko.observableArray();
+      self.add = function( key, value ) {
+        var op = new ObservationPayload( key, value );
+        self.list.push( op );
+      }
+    }
+
+    var obvm = new ObViewModel();
+    ko.applyBindings( obvm, document.getElementById( 'observation-content' ) );
+    $.getJSON( "observationpayload/" + avm.observationId(), function( _l ) {
+      _.each( _l, function(el) {
+        obvm.add( el.key, el.value );
+      });
+    });
+
+    </script>
