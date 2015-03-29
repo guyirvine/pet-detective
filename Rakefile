@@ -2,7 +2,7 @@ require 'rake/testtask'
 
 task :push do
   `git push`
-  `ssh dev.guyirvine.com "cd /guyirvine.com/pet-detective && git pull && sudo /sbin/stop pet-detective && ps ax | grep observation | head -n 1 | awk '{print $1}' | xargs kill && sudo /sbin/start pet-detective"`
+  `ssh dev.guyirvine.com "cd /guyirvine.com/pet-detective && git pull && ps ax | grep observation | grep -v su | head -n 1 | awk '{print $1}' | xargs kill"`
 end
 
 Rake::TestTask.new do |t|

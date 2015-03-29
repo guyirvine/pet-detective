@@ -11,6 +11,23 @@ get '/config.js' do
 end
 
 
+get '/apps' do
+  db = FluidDb::Db(ENV['DB'])
+  list = db.queryForResultset( 'SELECT DISTINCT app_key observation_tbl' )
+  db.close
+
+  return list.to_json
+end
+
+get '/lastcontact' do
+  db = FluidDb::Db(ENV['DB'])
+  list = db.queryForResultset( 'SELECT app_key, MAX( received ) AS lastcontact FROM observation_tbl GROUP BY app_key' )
+  db.close
+
+  return list.to_json
+end
+
+
 post '/observation' do
   db = FluidDb::Db(ENV['DB'])
 
