@@ -63,7 +63,7 @@
     ko.applyBindings( vm );
 
 
-    $.getJSON( '/lastcontact', function( _l ) {
+    $.getJSON( 'lastcontact', function( _l ) {
       console.log( _l );
       _.each( _l, function(el) {
         vm.add( el.app_key, el.lastcontact );
