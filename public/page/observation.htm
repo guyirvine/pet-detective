@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody data-bind="foreach: sensor_list">
-      <tr data-bind="click: click">
+      <tr data-bind="click: click, css: { alert2: onalert() == true }">
         <td data-bind="text: key"></td>
         <td data-bind="text: value"></td>
       </tr>
@@ -50,6 +50,7 @@
 
       self.key = _key;
       self.value = _value;
+      self.onalert = ko.observable( false );
     }
 
     function ObViewModel() {
@@ -61,10 +62,23 @@
       self.ob_mon = ko.observable();
       self.ob_received = ko.observable();
 
+      self.alertIdx = {}
       self.sensor_list = ko.observableArray();
       self.add = function( key, value ) {
         var op = new ObservationPayload( key, value );
         self.sensor_list.push( op );
+        console.log( "key", key );
+        self.alertIdx[key] = op;
+      }
+
+      self.sort = function(left,right) {
+        if ( left.onalert() == true ) {
+          return -1;
+        } else if ( right.onalert() == true ) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     }
 
@@ -74,6 +88,15 @@
     $.getJSON( "observationpayload/" + obvm.id, function( _l ) {
       _.each( _l, function(el) {
         obvm.add( el.key, el.value );
+      });
+
+      $.getJSON( "alertsfordisplay/" + obvm.id, function( _l ) {
+        _.each( _l, function(el) {
+          console.log( "el.sensor_key", el.sensor_key );
+          obvm.alertIdx[el.sensor_key].onalert( true );
+
+          obvm.sensor_list.sort( obvm.sort );
+        });
       });
 
     });

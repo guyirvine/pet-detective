@@ -56,8 +56,39 @@ get '/sensor/:id/:key' do
         'ORDER BY o.sent DESC ' \
         ''
 
-  p = [ params[:id], params[:key] ]
+  p = [params[:id], params[:key]]
   list = db.queryForResultset(sql, p)
+  db.close
+
+  return list.to_json
+end
+
+get '/alertsfordisplay' do
+  db = FluidDb::Db(ENV['DB'])
+  sql = '' \
+        'SELECT o.app_key, o.mon_key, a.sensor_key, count(*) AS count ' \
+        'FROM observation_tbl o ' \
+        '  INNER JOIN alert_tbl a ON ( o.id = a.observation_id ) ' \
+        'WHERE a.clearedat IS NULL ' \
+        'GROUP BY o.app_key, o.mon_key, a.sensor_key; ' \
+        ''
+
+  list = db.queryForResultset(sql, p)
+  db.close
+
+  return list.to_json
+end
+
+get '/alertsfordisplay/:id' do
+  db = FluidDb::Db(ENV['DB'])
+  sql = '' \
+        'SELECT a.sensor_key ' \
+        'FROM alert_tbl a ' \
+        'WHERE a.clearedat IS NULL ' \
+        'AND a.observation_id = ? ' \
+        ''
+
+  list = db.queryForResultset(sql, [ params[:id] ] )
   db.close
 
   return list.to_json

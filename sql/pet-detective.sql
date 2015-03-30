@@ -90,7 +90,7 @@ ALTER TABLE public.observationpayload_tbl OWNER TO farmperformance;
 -- Name: observation_seq; Type: SEQUENCE SET; Schema: public; Owner: farmperformance
 --
 
-SELECT pg_catalog.setval('observation_seq', 12, true);
+SELECT pg_catalog.setval('observation_seq', 18, true);
 
 
 --
@@ -110,6 +110,12 @@ COPY observation_tbl (id, app_key, mon_key, sent, received) FROM stdin;
 10	fp-server	beanstalk	2015-03-30 10:15:11	2015-03-30 10:15:11.776097
 11	galvatron	beanstalk	2015-03-30 11:36:54	2015-03-30 11:37:22.428741
 12	fp-server	beanstalk	2015-03-30 11:37:53	2015-03-30 11:37:53.450678
+13	fp-server	beanstalk	2015-03-30 12:00:01	2015-03-30 12:00:01.438358
+14	galvatron	beanstalk	2015-03-30 12:00:01	2015-03-30 12:00:29.720156
+15	fp-server	beanstalk	2015-03-30 16:00:01	2015-03-30 16:00:02.198767
+16	galvatron	beanstalk	2015-03-30 16:00:01	2015-03-30 16:00:30.092612
+17	fp-server	beanstalk	2015-03-30 20:00:01	2015-03-30 20:00:01.895074
+18	galvatron	beanstalk	2015-03-30 20:00:02	2015-03-30 20:00:31.472413
 \.
 
 
@@ -117,7 +123,7 @@ COPY observation_tbl (id, app_key, mon_key, sent, received) FROM stdin;
 -- Name: observationpayload_seq; Type: SEQUENCE SET; Schema: public; Owner: farmperformance
 --
 
-SELECT pg_catalog.setval('observationpayload_seq', 143, true);
+SELECT pg_catalog.setval('observationpayload_seq', 243, true);
 
 
 --
@@ -268,6 +274,106 @@ COPY observationpayload_tbl (id, observation_id, key, value) FROM stdin;
 141	12	default	0
 142	12	error	72
 143	12	Production	0
+144	13	default	0
+145	13	error	72
+146	13	Production	0
+147	14	default	0
+148	14	WeightProdAudit	8848
+149	14	ReproData	220
+150	14	Mating	0
+151	14	MINDAQueries	0
+152	14	auditweight	15
+153	14	Vetdata	3
+154	14	Dal	1
+155	14	HerdService	1
+156	14	Event	1
+157	14	VetData	4
+158	14	error	6
+159	14	PasturePerformance	0
+160	14	Datasourcing	18
+161	14	Liveweight	0
+162	14	Herd	0
+163	14	AnimalGroupMembership	0
+164	14	Calving	0
+165	14	Health	0
+166	14	Production	0
+167	14	PregnancyDiagnosis	0
+168	14	DAL	0
+169	14	agrimetrics-bcsperformance	0
+170	14	Weight	0
+171	14	CustomerCareService	0
+172	14	WeightProd	0
+173	14	HerdImprovement	0
+174	14	Data	0
+175	14	ItOpsServiceM	0
+176	14	Firehose3	0
+177	15	default	0
+178	15	error	72
+179	15	Production	0
+180	16	default	0
+181	16	WeightProdAudit	8848
+182	16	ReproData	220
+183	16	Mating	0
+184	16	MINDAQueries	0
+185	16	auditweight	15
+186	16	Vetdata	3
+187	16	Dal	1
+188	16	HerdService	1
+189	16	Event	1
+190	16	VetData	4
+191	16	error	6
+192	16	PasturePerformance	0
+193	16	Datasourcing	18
+194	16	Liveweight	0
+195	16	Herd	0
+196	16	AnimalGroupMembership	0
+197	16	Calving	0
+198	16	Health	0
+199	16	Production	0
+200	16	PregnancyDiagnosis	0
+201	16	DAL	0
+202	16	agrimetrics-bcsperformance	0
+203	16	Weight	0
+204	16	CustomerCareService	0
+205	16	WeightProd	0
+206	16	HerdImprovement	0
+207	16	Data	0
+208	16	ItOpsServiceM	0
+209	16	Firehose3	0
+210	16	AgrivetricsData	1
+211	17	default	0
+212	17	error	0
+213	17	Production	0
+214	18	default	0
+215	18	AgrivetricsData	1
+216	18	ReproData	220
+217	18	Mating	0
+218	18	MINDAQueries	0
+219	18	auditweight	15
+220	18	Vetdata	3
+221	18	Dal	1
+222	18	HerdService	1
+223	18	Event	1
+224	18	VetData	4
+225	18	error	6
+226	18	PasturePerformance	0
+227	18	Datasourcing	0
+228	18	Liveweight	0
+229	18	Herd	0
+230	18	AnimalGroupMembership	0
+231	18	Calving	0
+232	18	Health	0
+233	18	Production	0
+234	18	PregnancyDiagnosis	0
+235	18	DAL	0
+236	18	agrimetrics-bcsperformance	0
+237	18	Weight	0
+238	18	CustomerCareService	0
+239	18	WeightProd	0
+240	18	HerdImprovement	0
+241	18	Data	0
+242	18	ItOpsServiceM	0
+243	18	Firehose3	0
 \.
 
 

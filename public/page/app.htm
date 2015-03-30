@@ -10,7 +10,7 @@
       </tr>
     </thead>
     <tbody data-bind="foreach: list">
-      <tr data-bind="click: click">
+      <tr data-bind="click: click, css: { alert2: onalert() == true }">
         <td data-bind="text: label"></td>
         <td data-bind="text: received"></td>
       </tr>
@@ -32,16 +32,30 @@
       self.id = ko.observable( _id );
       self.label = _monname + ' - (' + _appname + ')';
       self.received = moment( _received ).format( "ddd, DD MMM h:MM:ss a");
+
+      self.onalert = ko.observable( false );
     }
 
     function AppViewModel() {
       var self = this;
 
       self.list = ko.observableArray();
+      self.alertIdx = {}
       self.observationId = ko.observable();
       self.add = function( id, appname, monname, received ) {
         var app = new App( id, appname, monname, received );
         self.list.push( app );
+        self.alertIdx[appname + '-' + monname] = app;
+      }
+
+      self.sort = function(left,right) {
+        if ( left.onalert() == true ) {
+          return -1;
+        } else if ( right.onalert() == true ) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     }
 
@@ -53,6 +67,15 @@
       _.each( _l, function(el) {
         avm.add( el.id, el.app_key, el.mon_key, el.received );
       });
+
+      $.getJSON( "alertsfordisplay", function( _l ) {
+        _.each( _l, function(el) {
+          avm.alertIdx[el.app_key + '-' + el.mon_key].onalert( true );
+        });
+
+        avm.list.sort( avm.sort );
+      });
+
     });
 
     </script>
