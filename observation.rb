@@ -34,6 +34,14 @@ get '/observationpayload/:id' do
   return list.to_json
 end
 
+get '/observation/:id' do
+  db = FluidDb::Db(ENV['DB'])
+  list = db.queryForArray('SELECT id, app_key, mon_key, sent, received FROM observation_tbl WHERE id = ?', [params[:id]])
+  db.close
+
+  return list.to_json
+end
+
 get '/sensor/:id/:key' do
   db = FluidDb::Db(ENV['DB'])
   sql = '' \

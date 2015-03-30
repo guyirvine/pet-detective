@@ -1,23 +1,22 @@
-    <header><h1>Pet Detective - App</h1></header>
+<header><h1>Dashboard</h1></header>
 
-    <div id="app-content" class="app-content">
+<div id="app-content" class="app-content">
 
-      <table class="grid">
-        <thead>
-          <tr>
-            <th>Monitor</th>
-            <th>Last Contact</th>
-          </tr>
-        </thead>
-        <tbody data-bind="foreach: list">
-          <tr data-bind="click: click">
-            <td data-bind="text: label"></td>
-            <td data-bind="text: received"></td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+  <table class="grid grid-clickable">
+    <thead>
+      <tr>
+        <th>Monitor</th>
+        <th>Last Contact</th>
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: list">
+      <tr data-bind="click: click">
+        <td data-bind="text: label"></td>
+        <td data-bind="text: received"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <script>
 
@@ -50,6 +49,7 @@
     ko.applyBindings( avm, document.getElementById( 'app-content' ) );
 
     $.getJSON( "lastcontact", function( _l ) {
+      avm.list.removeAll();
       _.each( _l, function(el) {
         avm.add( el.id, el.app_key, el.mon_key, el.received );
       });

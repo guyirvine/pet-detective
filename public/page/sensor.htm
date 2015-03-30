@@ -1,25 +1,42 @@
-<header><h1>Pet Detective - Sensor</h1></header>
-
-<div id="sensor-graph" class="sensor-graph"></div>
+<header><h1>Sensor</h1></header>
 
 <div id="sensor-content" class="sensor-content">
 
-      <table class="grid">
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody data-bind="foreach: list">
-          <tr>
-            <td data-bind="text: timestamp"></td>
-            <td data-bind="text: value"></td>
-          </tr>
-        </tbody>
-      </table>
+  <table class="grid sensors detail">
+    <thead>
+      <tr>
+        <th>Sensor</th>
+        <th>Monitor</th>
+        <th>Server</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-bind="text: sensor_name"></td>
+        <td data-bind="text: ob_mon"></td>
+        <td data-bind="text: ob_app"></td>
+      </tr>
+    </tbody>
+  </table>
 
-    </div>
+  <div id="sensor-graph" class="sensor-graph"></div>
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody data-bind="foreach: list">
+      <tr>
+        <td data-bind="text: timestamp"></td>
+        <td data-bind="text: value"></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
 
     <script>
 
@@ -54,10 +71,10 @@
       });
     }
 
-    function Sensor( _timestamp, _value ) {
+    function Sensor( _received, _value ) {
       var self = this;
 
-      self.timestamp = ko.observable( _timestamp );
+      self.timestamp = moment( _received ).format( "ddd, DD MMM h:MM:ss a");
       self.value = ko.observable( _value );
     }
 
@@ -68,14 +85,19 @@
       self.id = params[1];
       self.key = params[2];
 
+      self.sensor_name = ko.observable(self.key);
+      self.ob_app = ko.observable();
+      self.ob_mon = ko.observable();
+      self.ob_received = ko.observable();
+
       self.list = ko.observableArray();
 
       self.date_list = ['Date'];
       self.value_list = ['Value'];
-      self.add = function( timestamp, value ) {
-        var op = new Sensor( timestamp, value );
+      self.add = function( _received, value ) {
+        var op = new Sensor( _received, value );
         self.list.push( op );
-        self.date_list.push( new Date(timestamp) );
+        self.date_list.push( new Date(_received) );
         self.value_list.push( value );
       }
     }
@@ -87,7 +109,12 @@
         svm.add( el.received, el.value );
       });
       draw_line( 'sensor-graph' );
+    });
 
+    $.getJSON( "observation/" + svm.id, function(row) {
+      svm.ob_app( row['app_key'] );
+      svm.ob_mon( row['mon_key'] );
+      svm.ob_received( moment( row['received'] ).format( "ddd, DD MMM h:MM:ss a") );
     });
 
     </script>
