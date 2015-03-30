@@ -90,7 +90,7 @@ ALTER TABLE public.observationpayload_tbl OWNER TO farmperformance;
 -- Name: observation_seq; Type: SEQUENCE SET; Schema: public; Owner: farmperformance
 --
 
-SELECT pg_catalog.setval('observation_seq', 9, true);
+SELECT pg_catalog.setval('observation_seq', 12, true);
 
 
 --
@@ -107,6 +107,9 @@ COPY observation_tbl (id, app_key, mon_key, sent, received) FROM stdin;
 7	galvatron	beanstalk	2015-03-30 04:00:02	2015-03-30 04:00:29.339842
 8	fp-server	beanstalk	2015-03-30 08:00:01	2015-03-30 08:00:01.830319
 9	galvatron	beanstalk	2015-03-30 08:00:03	2015-03-30 08:00:30.726414
+10	fp-server	beanstalk	2015-03-30 10:15:11	2015-03-30 10:15:11.776097
+11	galvatron	beanstalk	2015-03-30 11:36:54	2015-03-30 11:37:22.428741
+12	fp-server	beanstalk	2015-03-30 11:37:53	2015-03-30 11:37:53.450678
 \.
 
 
@@ -114,7 +117,7 @@ COPY observation_tbl (id, app_key, mon_key, sent, received) FROM stdin;
 -- Name: observationpayload_seq; Type: SEQUENCE SET; Schema: public; Owner: farmperformance
 --
 
-SELECT pg_catalog.setval('observationpayload_seq', 107, true);
+SELECT pg_catalog.setval('observationpayload_seq', 143, true);
 
 
 --
@@ -229,6 +232,42 @@ COPY observationpayload_tbl (id, observation_id, key, value) FROM stdin;
 105	9	Data	\N
 106	9	ItOpsServiceM	\N
 107	9	Firehose3	\N
+108	10	default	0
+109	10	error	72
+110	10	Production	0
+111	11	default	0
+112	11	WeightProdAudit	8848
+113	11	ReproData	220
+114	11	Mating	0
+115	11	MINDAQueries	0
+116	11	auditweight	15
+117	11	Vetdata	3
+118	11	Dal	1
+119	11	HerdService	1
+120	11	Event	1
+121	11	VetData	4
+122	11	error	6
+123	11	PasturePerformance	0
+124	11	Datasourcing	18
+125	11	Liveweight	0
+126	11	Herd	0
+127	11	AnimalGroupMembership	0
+128	11	Calving	0
+129	11	Health	0
+130	11	Production	0
+131	11	PregnancyDiagnosis	0
+132	11	DAL	0
+133	11	agrimetrics-bcsperformance	0
+134	11	Weight	0
+135	11	CustomerCareService	0
+136	11	WeightProd	0
+137	11	HerdImprovement	0
+138	11	Data	0
+139	11	ItOpsServiceM	0
+140	11	Firehose3	0
+141	12	default	0
+142	12	error	72
+143	12	Production	0
 \.
 
 

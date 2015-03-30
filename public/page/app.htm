@@ -2,18 +2,16 @@
 
     <div id="app-content" class="app-content">
 
-      <table>
+      <table class="grid">
         <thead>
           <tr>
-            <th>App</th>
             <th>Monitor</th>
             <th>Last Contact</th>
           </tr>
         </thead>
         <tbody data-bind="foreach: list">
           <tr data-bind="click: click">
-            <td data-bind="text: appname"></td>
-            <td data-bind="text: monname"></td>
+            <td data-bind="text: label"></td>
             <td data-bind="text: received"></td>
           </tr>
         </tbody>
@@ -27,19 +25,14 @@
       var self = this;
 
       self.click = function(e) {
-        console.log( self.id() );
-        avm.observationId( self.id() );
-
-        $.get( "page/observation.htm", function( content ) {
-          $( ".content" ).html( content );
-        });
+        history.pushState( {}, 'Observation', '#observation/' + self.id() );
+        $( '.content' ).load( 'page/observation.htm' );
 
       }
 
       self.id = ko.observable( _id );
-      self.appname = ko.observable( _appname );
-      self.monname = ko.observable( _monname );
-      self.received = ko.observable( _received );
+      self.label = _monname + ' - (' + _appname + ')';
+      self.received = moment( _received ).format( "ddd, DD MMM h:MM:ss a");
     }
 
     function AppViewModel() {

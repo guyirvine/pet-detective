@@ -34,6 +34,27 @@ get '/observationpayload/:id' do
   return list.to_json
 end
 
+get '/sensor/:id/:key' do
+  db = FluidDb::Db(ENV['DB'])
+  sql = '' \
+        'SELECT o.app_key, o.mon_key, o.sent, o.received, ' \
+        '       op.observation_id, op.key, op.value ' \
+        'FROM observationpayload_tbl op ' \
+        '       INNER JOIN observation_tbl o ON ( op.observation_id = o.id ) ' \
+        '       INNER JOIN observation_tbl o_match ON ( ' \
+        '         o_match.app_key = o.app_key AND o_match.mon_key = o.mon_key ) ' \
+        'WHERE o_match.id = ? ' \
+        'AND   op.key = ? ' \
+        'ORDER BY o.sent DESC ' \
+        ''
+
+  p = [ params[:id], params[:key] ]
+  list = db.queryForResultset(sql, p)
+  db.close
+
+  return list.to_json
+end
+
 post '/observation' do
   db = FluidDb::Db(ENV['DB'])
 

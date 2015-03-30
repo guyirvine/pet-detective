@@ -1,0 +1,93 @@
+<h1>Pet Detective - Sensor</h1>
+
+<div id="sensor-graph" class="sensor-graph"></div>
+
+<div id="sensor-content" class="sensor-content">
+
+      <table class="grid">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: list">
+          <tr>
+            <td data-bind="text: timestamp"></td>
+            <td data-bind="text: value"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <script>
+
+    function draw_line( id, s1 ) {
+
+      var chart = c3.generate({
+          bindto: "#" + id,
+          size: {
+            height: 200,
+            width: 500
+          },
+          data: {
+              x: 'Date',
+      //        xFormat: '%Y%m%d', // 'xFormat' can be used as custom format of 'x'
+              xFormat: '%d %m', // 'xFormat' can be used as custom format of 'x'
+              columns: [
+                svm.date_list,
+//                  ['x', '2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04', '2013-01-05', '2013-01-06'],
+      //            ['x', '20130101', '20130102', '20130103', '20130104', '20130105', '20130106'],
+//                  ['data1', 30, 200, 100, 400, 150, 250]
+                svm.value_list
+              ]
+          },
+          axis: {
+              x: {
+                  type: 'timeseries',
+                  tick: {
+                      format: '%Y-%m-%d'
+                  }
+              }
+          }
+      });
+    }
+
+    function Sensor( _timestamp, _value ) {
+      var self = this;
+
+      self.timestamp = ko.observable( _timestamp );
+      self.value = ko.observable( _value );
+    }
+
+    function SensorViewModel() {
+      var self = this;
+
+      params = window.location.hash.split( "/" );
+      self.id = params[1];
+      self.key = params[2];
+
+      self.list = ko.observableArray();
+
+      self.date_list = ['Date'];
+      self.value_list = ['Value'];
+      self.add = function( timestamp, value ) {
+        var op = new Sensor( timestamp, value );
+        self.list.push( op );
+        self.date_list.push( new Date(timestamp) );
+        self.value_list.push( value );
+      }
+    }
+
+    var svm = new SensorViewModel();
+    ko.applyBindings( svm, document.getElementById( 'sensor-content' ) );
+    $.getJSON( "sensor/" + svm.id + "/" + svm.key, function( _l ) {
+      _.each( _l, function(el) {
+        svm.add( el.received, el.value );
+      });
+      draw_line( 'sensor-graph' );
+
+    });
+
+    </script>

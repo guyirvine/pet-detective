@@ -2,15 +2,15 @@
 
 <div id="observation-content" class="observation-content">
 
-      <table>
+      <table class="grid">
         <thead>
           <tr>
-            <th>Key</th>
+            <th>Sensor</th>
             <th>Value</th>
           </tr>
         </thead>
         <tbody data-bind="foreach: list">
-          <tr>
+          <tr data-bind="click: click">
             <td data-bind="text: key"></td>
             <td data-bind="text: value"></td>
           </tr>
@@ -24,12 +24,21 @@
     function ObservationPayload( _key, _value ) {
       var self = this;
 
-      self.key = ko.observable( _key );
-      self.value = ko.observable( _value );
+      self.click = function(e) {
+        history.pushState( {}, null, '#sensor/' + obvm.id + '/' + self.key );
+
+        $( ".content" ).load( "page/sensor.htm" );
+
+      }
+
+      self.key = _key;
+      self.value = _value;
     }
 
     function ObViewModel() {
       var self = this;
+
+      self.id = window.location.hash.split( "/" )[1];
 
       self.list = ko.observableArray();
       self.add = function( key, value ) {
@@ -40,10 +49,12 @@
 
     var obvm = new ObViewModel();
     ko.applyBindings( obvm, document.getElementById( 'observation-content' ) );
-    $.getJSON( "observationpayload/" + avm.observationId(), function( _l ) {
+
+    $.getJSON( "observationpayload/" + obvm.id, function( _l ) {
       _.each( _l, function(el) {
         obvm.add( el.key, el.value );
       });
+
     });
 
     </script>

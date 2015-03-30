@@ -1,0 +1,25 @@
+
+table.grid tr:hover td {
+  cursor: pointer;
+  background-color: #EEE;
+  opacity: 0.7;
+}
+
+table.grid tr:nth-child(odd) {
+  background-color: #F9F9F9;
+}
+
+table.grid {
+  margin: 3em;
+  border: 1px solid black;
+}
+
+table.grid th, table.grid td {
+  padding: 3em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+table.grid thead {
+  border-bottom: 1px solid black;
+}
